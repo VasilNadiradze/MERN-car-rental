@@ -54,3 +54,21 @@ export const addCar = async (req, res) => {
     });
   }
 };
+
+export const getOwnerCars = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const cars = await Car.find({owner: _id})
+
+    return res.status(200).json({
+      success: true,
+      cars,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+}
