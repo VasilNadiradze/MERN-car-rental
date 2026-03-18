@@ -21,7 +21,7 @@ export const addCar = async (req, res) => {
   try {
     const { _id } = req.user;
 
-    const carData = JSON.parse(req.body.carData);
+    const carData = req.carData; // უკვე ვალიდირებული
     const imageFile = req.file;
 
     if (!imageFile) {
@@ -31,13 +31,11 @@ export const addCar = async (req, res) => {
       });
     }
 
-    // upload to ImageKit
     const uploadedImage = await imagekit.files.upload({
       file: await toFile(imageFile.buffer, imageFile.originalname),
       fileName: imageFile.originalname,
     });
 
-    // save car in database
     const car = await Car.create({
       ...carData,
       owner: _id,
