@@ -6,6 +6,7 @@ import {
   deleteCar,
   getOwnerCars,
   toggleCarAvailability,
+  updateProfileImage,
 } from "../controllers/ownerController.js";
 import upload from "../middleware/multer.js";
 import { validateCar } from "../validations/carValidation.js";
@@ -23,5 +24,6 @@ ownerRouter.post(
 ownerRouter.get("/cars", protect, getOwnerCars);
 ownerRouter.post("/toggle-car-availability", protect, toggleCarAvailability);
 ownerRouter.delete("/delete-car/:carId", protect, deleteCar);
+ownerRouter.delete("/update-profile-image", protect, updateProfileImage);
 
 export default ownerRouter;

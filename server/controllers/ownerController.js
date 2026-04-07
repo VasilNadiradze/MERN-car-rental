@@ -155,3 +155,35 @@ export const getDashboardData = async (req, res) => {
     });
   }
 };
+
+export const updateProfileImage = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const imageFile = req.file;
+
+    if (!imageFile) {
+      return res.status(400).json({
+        success: false,
+        message: "Image is required",
+      });
+    }
+
+    const uploadedImage = await imagekit.files.upload({
+      file: await toFile(imageFile.buffer, imageFile.originalname),
+      fileName: imageFile.originalname,
+    });
+
+    await User.findByIdAndUpdate(_id, { image: uploadedImage.url });
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile image updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
