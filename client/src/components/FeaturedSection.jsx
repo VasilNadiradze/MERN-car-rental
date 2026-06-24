@@ -2,9 +2,11 @@ import Title from "./Title";
 import { assets, dummyCarData } from "../assets/assets";
 import CarCard from "./CarCard";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 const FeaturedSection = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { cars } = useAppContext()
 
   return (
     <div className="flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32">

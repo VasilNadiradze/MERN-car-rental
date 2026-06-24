@@ -1,31 +1,32 @@
 import { useState } from "react";
-import { assets, dummyUserData, ownerMenuLinks } from "../../assets/assets";
+import { assets, ownerMenuLinks } from "../../assets/assets";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const Sidebar = () => {
-  const user = dummyUserData;
+  const { user, fetchUser } = useAppContext()
   const location = useLocation();
   const [image, setImage] = useState("");
 
   const updateImage = async () => {
-    user.image = URL.createObjectURL(image);
-    setImage("");
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("image", image);
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
 
-    //   const { data } = await axios.post("/api/owner/update-image", formData);
+      const { data } = await axios.post("/api/owner/update-profile-image", formData);
 
-    //   if (data.success) {
-    //     fetchUser();
-    //     toast.success(data.message);
-    //     setImage("");
-    //   } else {
-    //     toast.error(data.message);
-    //   }
-    // } catch (error) {
-    //   toast.error(error.message);
-    // }
+      if (data.success) {
+        fetchUser();
+        toast.success(data.message);
+        setImage("");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -37,7 +38,7 @@ const Sidebar = () => {
               image
                 ? URL.createObjectURL(image)
                 : user?.image ||
-                  "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=300"
+                "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=300"
             }
             alt=""
             className="h-9 md:h-14 w-9 md:w-14 rounded-full mx-auto"

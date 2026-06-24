@@ -4,6 +4,7 @@ import {
   addCar,
   changeRoleToOwner,
   deleteCar,
+  getDashboardData,
   getOwnerCars,
   toggleCarAvailability,
   updateProfileImage,
@@ -24,6 +25,8 @@ ownerRouter.post(
 ownerRouter.get("/cars", protect, getOwnerCars);
 ownerRouter.post("/toggle-car-availability", protect, toggleCarAvailability);
 ownerRouter.delete("/delete-car/:carId", protect, deleteCar);
-ownerRouter.delete("/update-profile-image", protect, updateProfileImage);
+
+ownerRouter.get('/dashboard', protect, getDashboardData)
+ownerRouter.post('/update-profile-image', upload.single("image"), protect, updateProfileImage)
 
 export default ownerRouter;
